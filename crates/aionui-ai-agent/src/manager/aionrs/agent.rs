@@ -218,8 +218,10 @@ impl AionrsAgentManager {
 
         let is_resume = resume_session.is_some();
         let provider_label = config.provider_label.clone();
-
-        let mut bootstrap = AgentBootstrap::new(config, &workspace, sink).runtime_env(runtime_env);
+        let provider = super::dsml::provider_for(&config);
+        let mut bootstrap = AgentBootstrap::new(config, &workspace, sink)
+            .provider(provider)
+            .runtime_env(runtime_env);
         if let Some(session) = resume_session {
             info!(
                 conversation_id = %conversation_id,
